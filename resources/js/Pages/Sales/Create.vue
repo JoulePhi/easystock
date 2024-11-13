@@ -6,7 +6,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/Utils/format';
 
 const props = defineProps({
     items: Object,

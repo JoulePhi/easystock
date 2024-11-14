@@ -7,6 +7,7 @@ import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
 import debounce from 'lodash/debounce';
+import { formatCurrency } from '@/Utils/format';
 
 const props = defineProps({
     purchaseOrders: Object,
@@ -118,7 +119,7 @@ const getStatusColor = (status) => {
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                ${{ po.total_amount.toFixed(2) }}
+                                {{ formatCurrency(po.total_amount) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ new Date(po.expected_date).toLocaleDateString() }}

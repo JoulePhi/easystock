@@ -2,12 +2,12 @@
 <script setup>
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
-import AppLayout from '@/Components/Layout/AppLayout.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
 import Modal from '@/Components/Shared/Modal.vue';
-import { formatCurrency, formatDate } from '@/utils/format';
+import { formatCurrency, formatDate } from '@/Utils/format';
 
 const props = defineProps({
     order: {

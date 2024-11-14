@@ -21,16 +21,30 @@ class Item extends Model
         'price',
         'cost',
         'vendor_id',
-        'is_active'
+        'is_active',
+        'image',
     ];
 
     protected $casts = [
-        'minimum_stock' => 'decimal:2',
-        'current_stock' => 'decimal:2',
+        'minimum_stock' => 'integer',
+        'current_stock' => 'integer',
         'price' => 'decimal:2',
         'cost' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset('storage/' . $this->image)
+            : null;
+    }
 
     public function category()
     {

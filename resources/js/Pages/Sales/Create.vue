@@ -7,6 +7,7 @@ import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
 import { formatCurrency } from '@/Utils/format';
+import { PlusIcon, MinusIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
     items: Object,
@@ -107,9 +108,10 @@ const processPayment = () => {
                 <!-- Items Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                     <button v-for="item in filteredItems" :key="item.id" @click="addToCart(item)"
-                        class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-200"
+                        class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-200 h-72"
                         :class="{ 'opacity-50 cursor-not-allowed': item.current_stock <= 0 }"
                         :disabled="item.current_stock <= 0">
+                        <img :src="item.image_url" alt="" class="rounded-lg h-2/3 object-cover mx-auto" />
                         <div class="text-sm font-medium text-gray-900">{{ item.name }}</div>
                         <div class="text-sm text-gray-500">{{ formatCurrency(item.price) }}</div>
                         <div class="text-xs text-gray-500 mt-1">

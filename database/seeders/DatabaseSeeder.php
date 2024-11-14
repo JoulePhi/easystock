@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             AdminUserSeeder::class,
             TransactionTypeSeeder::class,
-            ItemCategorySeeder::class,
+            // ItemCategorySeeder::class,
+            DataSeeder::class,
         ]);
     }
 }

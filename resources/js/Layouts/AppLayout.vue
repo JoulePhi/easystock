@@ -1,6 +1,6 @@
 <!-- resources/js/Components/Layout/AppLayout.vue -->
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
     Bars3Icon,
@@ -19,6 +19,7 @@ const showingNavigationDropdown = ref(false);
 const { user } = usePage().props;
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import ToggleTheme from '@/Components/Shared/ToggleTheme.vue';
+import { toast } from 'vue3-toastify';
 
 
 
@@ -36,6 +37,16 @@ const userNavigation = [
     // { name: 'Settings', href: route('settings.index') },
 ];
 
+const page = usePage()
+
+onMounted(() => {
+    if (page.props.flash.success) {
+        toast.success(page.props.flash.success)
+    }
+    if (page.props.flash.error) {
+        toast.error(page.props.flash.error)
+    }
+})
 </script>
 
 <template>

@@ -1,15 +1,16 @@
 <!-- resources/js/Pages/Inventory/Create.vue -->
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
+import { onMounted, ref, computed } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
-import { defineProps, computed, ref } from 'vue';
 
 const props = defineProps({
     categories: Array,
-    vendors: Array
+    vendors: Array,
+    item: Object
 });
 
 const form = useForm({
@@ -24,13 +25,41 @@ const form = useForm({
     cost: 0,
     description: '',
     image: null,
-    image_url: null
+});
+
+const image_url = ref(null);
+
+onMounted(() => {
+    form.name = props.item.name;
+    form.sku = props.item.sku;
+    form.category_id = props.item.category_id;
+    form.vendor_id = props.item.vendor_id;
+    form.unit = props.item.unit;
+    form.minimum_stock = props.item.minimum_stock;
+    form.current_stock = props.item.current_stock;
+    form.price = props.item.price;
+    form.cost = props.item.cost;
+    form.description = props.item.description;
+    image_url.value = props.item.image_url;
 });
 
 
-
 const submit = () => {
-    form.post(route('inventory.items.store'));
+    router.post(route('inventory.items.update', props.item.id), {
+        _method: 'put',
+        name: form.name,
+        sku: form.sku,
+        category_id: form.category_id,
+        vendor_id: form.vendor_id,
+        unit: form.unit,
+        minimum_stock: form.minimum_stock,
+        current_stock: form.current_stock,
+        price: form.price,
+        cost: form.cost,
+        description: form.description,
+        image: form.image,
+
+    });
 };
 
 const fileInput = ref(null);
@@ -48,23 +77,22 @@ const handleFileUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
+    form.image = file;
     reader.onload = (e) => {
-        form.image = file;
-        form.image_url = e.target.result;
+        image_url.value = e.target.result;
     };
 
     reader.readAsDataURL(file);
 };
 
 const previewUrl = computed(() => {
-    return form.image_url;
+    return image_url.value;
 });
-
 </script>
 
 <template>
     <AppLayout>
-        <PageHeader title="Add New Item" description="Create a new inventory item">
+        <PageHeader title="Edit Item" description="Edit inventory item">
             <template #actions>
                 <Link :href="route('inventory.index')">
                 <Button variant="secondary">
@@ -169,6 +197,8 @@ const previewUrl = computed(() => {
                                 <p>Drag & drop or click to upload an image</p>
                             </div>
                         </div>
+                        <p v-if="form.errors.image" class="mt-1 text-sm text-red-600">{{ form.errors.image
+                            }}</p>
                     </div>
                 </div>
 
@@ -178,7 +208,7 @@ const previewUrl = computed(() => {
                         Cancel
                     </Button>
                     <Button type="submit" variant="primary" :disabled="form.processing">
-                        Create Item
+                        Update Item
                     </Button>
                 </div>
             </form>

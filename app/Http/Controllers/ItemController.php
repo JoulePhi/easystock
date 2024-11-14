@@ -79,7 +79,12 @@ class ItemController extends Controller
             'price' => 'required|numeric|min:0',
             'cost' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
+        $validated['image'] = $item->image;
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('items', 'public');
+        }
 
         $item->update($validated);
 

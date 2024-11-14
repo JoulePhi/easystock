@@ -7,6 +7,7 @@ import PageHeader from '@/Components/Shared/PageHeader.vue';
 import Button from '@/Components/Shared/Button.vue';
 import Card from '@/Components/Shared/Card.vue';
 import debounce from 'lodash/debounce';
+import { formatCurrency } from '@/Utils/format';
 
 const props = defineProps({
     items: Object,
@@ -88,45 +89,45 @@ watch([search, selectedCategory], debounce(() => {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-dark-300 dark:divide-gray-600">
                         <tr v-for="item in items.data" :key="item.id">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900">
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white">
                                             {{ item.name }}
                                         </div>
-                                        <div class="text-sm text-gray-500">
+                                        <div class="text-sm text-gray-500 dark:text-gray-50">
                                             {{ item.vendor.name }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-50">
                                 {{ item.sku }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-50">
                                 {{ item.category.name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div :class="[
                                     'text-sm',
-                                    item.current_stock <= item.minimum_stock
+                                    Math.round(item.current_stock) <= Math.round(item.minimum_stock)
                                         ? 'text-red-600'
                                         : 'text-gray-900'
                                 ]">
-                                    {{ item.current_stock }} {{ item.unit }}
+                                    {{ Math.round(item.current_stock) }} {{ item.unit }}
                                 </div>
-                                <div class="text-xs text-gray-500">
-                                    Min: {{ item.minimum_stock }} {{ item.unit }}
+                                <div class="text-xs text-gray-500 dark:text-gray-50">
+                                    Min: {{ Math.round(item.minimum_stock) }} {{ item.unit }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                ${{ parseInt(item.price).toFixed(2) }}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                {{ formatCurrency(item.price) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <Link v-if="$page.props.can.edit_items" :href="route('inventory.items.edit', item.id)"
-                                    class="text-primary-600 hover:text-primary-900">
+                                    class="text-primary-600 hover:text-primary-900 dark:text-dark-600">
                                 Edit
                                 </Link>
                             </td>
